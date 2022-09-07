@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)https://lodev.org/cgtutor/raycasting.html -->
+<html data-darkreader-mode="dynamic" data-darkreader-scheme="dark" class=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style class="darkreader darkreader--fallback" media="screen"></style><style class="darkreader darkreader--text" media="screen"></style><style class="darkreader darkreader--invert" media="screen">.jfk-bubble.gtx-bubble, .captcheck_answer_label > input + img, span#closed_text > img[src^="https://www.gstatic.com/images/branding/googlelogo"], span[data-href^="https://www.hcaptcha.com/"] > #icon, #bit-notification-bar-iframe, ::-webkit-calendar-picker-indicator {
+    filter: invert(100%) hue-rotate(180deg) contrast(90%) !important;
+}</style><style class="darkreader darkreader--inline" media="screen">[data-darkreader-inline-bgcolor] {
+  background-color: var(--darkreader-inline-bgcolor) !important;
+}
+[data-darkreader-inline-bgimage] {
+  background-image: var(--darkreader-inline-bgimage) !important;
+}
+[data-darkreader-inline-border] {
+  border-color: var(--darkreader-inline-border) !important;
+}
+[data-darkreader-inline-border-bottom] {
+  border-bottom-color: var(--darkreader-inline-border-bottom) !important;
+}
+[data-darkreader-inline-border-left] {
+  border-left-color: var(--darkreader-inline-border-left) !important;
+}
+[data-darkreader-inline-border-right] {
+  border-right-color: var(--darkreader-inline-border-right) !important;
+}
+[data-darkreader-inline-border-top] {
+  border-top-color: var(--darkreader-inline-border-top) !important;
+}
+[data-darkreader-inline-boxshadow] {
+  box-shadow: var(--darkreader-inline-boxshadow) !important;
+}
+[data-darkreader-inline-color] {
+  color: var(--darkreader-inline-color) !important;
+}
+[data-darkreader-inline-fill] {
+  fill: var(--darkreader-inline-fill) !important;
+}
+[data-darkreader-inline-stroke] {
+  stroke: var(--darkreader-inline-stroke) !important;
+}
+[data-darkreader-inline-outline] {
+  outline-color: var(--darkreader-inline-outline) !important;
+}
+[data-darkreader-inline-stopcolor] {
+  stop-color: var(--darkreader-inline-stopcolor) !important;
+}</style><style class="darkreader darkreader--variables" media="screen">:root {
+   --darkreader-neutral-background: #131516;
+   --darkreader-neutral-text: #d8d4cf;
+   --darkreader-selection-background: #004daa;
+   --darkreader-selection-text: #e8e6e3;
+}</style><style class="darkreader darkreader--root-vars" media="screen"></style><style class="darkreader darkreader--user-agent" media="screen">html {
+    background-color: #181a1b !important;
+}
+html {
+    color-scheme: dark !important;
+}
+html, body, input, textarea, select, button, dialog {
+    background-color: #181a1b;
+}
+html, body, input, textarea, select, button {
+    border-color: #736b5e;
+    color: #e8e6e3;
+}
+a {
+    color: #3391ff;
+}
+table {
+    border-color: #545b5e;
+}
+::placeholder {
+    color: #b2aba1;
+}
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+    background-color: #404400 !important;
+    color: #e8e6e3 !important;
+}
+::-webkit-scrollbar {
+    background-color: #202324;
+    color: #aba499;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #454a4d;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #575e62;
+}
+::-webkit-scrollbar-thumb:active {
+    background-color: #484e51;
+}
+::-webkit-scrollbar-corner {
+    background-color: #181a1b;
+}
+::selection {
+    background-color: #004daa !important;
+    color: #e8e6e3 !important;
+}
+::-moz-selection {
+    background-color: #004daa !important;
+    color: #e8e6e3 !important;
+}</style>
+
+<title>Raycasting</title>
+
+<link rel="stylesheet" type="text/css" href="./r_files/stylesheet.css"><style class="darkreader darkreader--sync" media="screen"></style>
+<meta name="darkreader" content="6b91acf1d6ce43beb59ca7c8fb44a584"><style class="darkreader darkreader--override" media="screen">.vimvixen-hint {
+    background-color: #7b5300 !important;
+    border-color: #d8b013 !important;
+    color: #f3e8c8 !important;
+}
+::placeholder {
+    opacity: 0.5 !important;
+}
+#edge-translate-panel-body,
+.MuiTypography-body1,
+.nfe-quote-text {
+    color: var(--darkreader-neutral-text) !important;
+}
+gr-main-header {
+    background-color: #0f3a48 !important;
+}
+.tou-z65h9k,
+.tou-mignzq,
+.tou-1b6i2ox,
+.tou-lnqlqk {
+    background-color: var(--darkreader-neutral-background) !important;
+}
+.tou-75mvi {
+    background-color: #032029 !important;
+}
+.tou-ta9e87,
+.tou-1w3fhi0,
+.tou-1b8t2us,
+.tou-py7lfi,
+.tou-1lpmd9d,
+.tou-1frrtv8,
+.tou-17ezmgn {
+    background-color: #0a0a0a !important;
+}
+.tou-uknfeu {
+    background-color: #231603 !important;
+}
+.tou-6i3zyv {
+    background-color: #19576c !important;
+}</style><link type="text/css" rel="stylesheet" charset="UTF-8" href="./r_files/translateelement.css"><style class="darkreader darkreader--cors" media="screen">.goog-te-banner-frame{left:0px;top:0px;height:39px;width:100%;z-index:10000001;position:fixed;border:none;border-bottom:1px solid #6b90da;margin:0;-moz-box-shadow:0 0 8px 1px #999999;-webkit-box-shadow:0 0 8px 1px #999999;box-shadow:0 0 8px 1px #999999;_position:absolute}.goog-te-menu-frame{z-index:10000002;position:fixed;border:none;-moz-box-shadow:0 3px 8px 2px #999999;-webkit-box-shadow:0 3px 8px 2px #999999;box-shadow:0 3px 8px 2px #999999;_position:absolute}.goog-te-ftab-frame{z-index:10000000;border:none;margin:0}.goog-te-gadget{font-family:arial;font-size:11px;color:#666;white-space:nowrap}.goog-te-gadget img{vertical-align:middle;border:none}.goog-te-gadget-simple{background-color:#fff;border-left:1px solid #d5d5d5;border-top:1px solid #9b9b9b;border-bottom:1px solid #e8e8e8;border-right:1px solid #d5d5d5;font-size:10pt;display:inline-block;padding-top:1px;padding-bottom:2px;cursor:pointer;zoom:1;*display:inline}.goog-te-gadget-icon{margin-left:2px;margin-right:2px;width:19px;height:19px;border:none;vertical-align:middle}.goog-te-combo{margin-left:4px;margin-right:4px;vertical-align:baseline;*vertical-align:middle}.goog-te-gadget .goog-te-combo{margin:4px 0}.goog-logo-link,.goog-logo-link:link,.goog-logo-link:visited,.goog-logo-link:hover,.goog-logo-link:active{font-size:12px;font-weight:bold;color:#444;text-decoration:none}.goog-te-banner .goog-logo-link,.goog-close-link{display:block;margin:0px 10px}.goog-te-banner .goog-logo-link{padding-top:2px;padding-left:4px}.goog-te-combo,.goog-te-banner *,.goog-te-ftab *,.goog-te-menu *,.goog-te-menu2 *,.goog-te-balloon *{font-family:arial;font-size:10pt}.goog-te-banner{margin:0;background-color:#e4effb;overflow:hidden}.goog-te-banner img{border:none}.goog-te-banner-content{color:#000}.goog-te-banner-content img{vertical-align:middle}.goog-te-banner-info{color:#666;vertical-align:top;margin-top:0px;font-size:7pt}.goog-te-banner-margin{width:8px}.goog-te-button{border-color:#e7e7e7;border-style:none solid solid none;border-width:0 1px 1px 0}.goog-te-button div{border-color:#cccccc #999999 #999999 #cccccc;border-right:1px solid #999999;border-style:solid;border-width:1px;height:20px}.goog-te-button button{background:transparent;border:none;cursor:pointer;height:20px;overflow:hidden;margin:0;vertical-align:top;white-space:nowrap}.goog-te-button button:active{background:none repeat scroll 0 0 #cccccc}.goog-te-ftab{margin:0px;background-color:#fff;white-space:nowrap}.goog-te-ftab-link{text-decoration:none;font-weight:bold;font-size:10pt;border:1px outset #888;padding:6px 10px;white-space:nowrap;position:absolute;left:0px;top:0px}.goog-te-ftab-link img{margin-left:2px;margin-right:2px;width:19px;height:19px;border:none;vertical-align:middle}.goog-te-ftab-link span{text-decoration:underline;margin-left:2px;margin-right:2px;vertical-align:middle}.goog-float-top .goog-te-ftab-link{padding:2px 2px;border-top-width:0px}.goog-float-bottom .goog-te-ftab-link{padding:2px 2px;border-bottom-width:0px}.goog-te-menu-value{text-decoration:none;color:#0000cc;white-space:nowrap;margin-left:4px;margin-right:4px}.goog-te-menu-value span{text-decoration:underline}.goog-te-menu-value img{margin-left:2px;margin-right:2px}.goog-te-gadget-simple .goog-te-menu-value{color:#000}.goog-te-gadget-simple .goog-te-menu-value span{text-decoration:none}.goog-te-menu{background-color:#ffffff;text-decoration:none;border:2px solid #c3d9ff;overflow-y:scroll;overflow-x:hidden;position:absolute;left:0;top:0}.goog-te-menu-item{padding:3px;text-decoration:none}.goog-te-menu-item,.goog-te-menu-item:link{color:#0000cc;background:#ffffff}.goog-te-menu-item:visited{color:#551a8b}.goog-te-menu-item:hover{background:#c3d9ff}.goog-te-menu-item:active{color:#0000cc}.goog-te-menu2{background-color:#ffffff;text-decoration:none;border:1px solid #6b90da;overflow:hidden;padding:4px}.goog-te-menu2-colpad{width:16px}.goog-te-menu2-separator{margin:6px 0;height:1px;background-color:#aaa;overflow:hidden}.goog-te-menu2-item div,.goog-te-menu2-item-selected div{padding:4px}.goog-te-menu2-item .indicator{display:none}.goog-te-menu2-item-selected .indicator{display:auto}.goog-te-menu2-item-selected .text{padding-left:4px;padding-right:4px}.goog-te-menu2-item,.goog-te-menu2-item-selected{text-decoration:none}.goog-te-menu2-item div,.goog-te-menu2-item:link div,.goog-te-menu2-item:visited div,.goog-te-menu2-item:active div{color:#0000cc;background:#ffffff}.goog-te-menu2-item:hover div{color:#ffffff;background:#3366cc}.goog-te-menu2-item-selected div,.goog-te-menu2-item-selected:link div,.goog-te-menu2-item-selected:visited div,.goog-te-menu2-item-selected:hover div,.goog-te-menu2-item-selected:active div{color:#000;font-weight:bold}.goog-te-balloon{background-color:#ffffff;overflow:hidden;padding:8px;border:none;-moz-border-radius:10px;border-radius:10px}.goog-te-balloon-frame{background-color:#ffffff;border:1px solid #6b90da;-moz-box-shadow:0 3px 8px 2px #999999;-webkit-box-shadow:0 3px 8px 2px #999999;box-shadow:0 3px 8px 2px #999999;-moz-border-radius:8px;border-radius:8px}.goog-te-balloon img{border:none}.goog-te-balloon-text{margin-top:6px}.goog-te-balloon-zippy{margin-top:6px;white-space:nowrap}.goog-te-balloon-zippy *{vertical-align:middle}.goog-te-balloon-zippy .minus{background-image:url("https://www.google.com/images/zippy_minus_sm.gif")}.goog-te-balloon-zippy .plus{background-image:url("https://www.google.com/images/zippy_plus_sm.gif")}.goog-te-balloon-zippy span{color:#00c;text-decoration:underline;cursor:pointer;margin:0 4px}.goog-te-balloon-form{margin:6px 0 0 0}.goog-te-balloon-form form{margin:0}.goog-te-balloon-form form textarea{margin-bottom:4px;width:100%}.goog-te-balloon-footer{margin:6px 0 4px 0}.goog-te-spinner-pos{z-index:1000;position:fixed;transition-delay:0.6s;left:-1000px;top:-1000px}.goog-te-spinner-animation{background:#ccc;display:flex;align-items:center;justify-content:center;width:104px;height:104px;border-radius:50px;background:#fff url("https://www.gstatic.com/images/branding/product/2x/translate_24dp.png") 50% 50% no-repeat;transition:all 0.6s ease-in-out;transform:scale(0.4);opacity:0}.goog-te-spinner-animation-show{transform:scale(0.5);opacity:1}.goog-te-spinner{margin:2px 0 0 2px;animation:goog-te-spinner-rotator 1.4s linear infinite}@keyframes goog-te-spinner-rotator{0%{transform:rotate(0deg)}100%{transform:rotate(270deg)}}.goog-te-spinner-path{stroke-dasharray:187;stroke-dashoffset:0;stroke:#4285f4;transform-origin:center;animation:goog-te-spinner-dash 1.4s ease-in-out infinite}@keyframes goog-te-spinner-dash{0%{stroke-dashoffset:187}50%{stroke-dashoffset:46.75;transform:rotate(135deg)}100%{stroke-dashoffset:187;transform:rotate(450deg)}}#goog-gt-tt html,#goog-gt-tt body,#goog-gt-tt div,#goog-gt-tt span,#goog-gt-tt iframe,#goog-gt-tt h1,#goog-gt-tt h2,#goog-gt-tt h3,#goog-gt-tt h4,#goog-gt-tt h5,#goog-gt-tt h6,#goog-gt-tt p,#goog-gt-tt a,#goog-gt-tt img,#goog-gt-tt ol,#goog-gt-tt ul,#goog-gt-tt li,#goog-gt-tt table,#goog-gt-tt form,#goog-gt-tt tbody,#goog-gt-tt tr,#goog-gt-tt td{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;text-align:left;line-height:normal}#goog-gt-tt ol,#goog-gt-tt ul{list-style:none}#goog-gt-tt table{border-collapse:collapse;border-spacing:0}#goog-gt-tt caption,#goog-gt-tt th,#goog-gt-tt td{text-align:left;font-weight:normal}#goog-gt-tt input::-moz-focus-inner{border:0}div#goog-gt-tt{padding:10px 14px}#goog-gt-tt{color:#222;background-color:#ffffff;border:1px solid #eee;box-shadow:0 4px 16px rgba(0,0,0,.2);-moz-box-shadow:0 4px 16px rgba(0,0,0,.2);-webkit-box-shadow:0 4px 16px rgba(0,0,0,.2);display:none;font-family:arial;font-size:10pt;width:420px;padding:12px;position:absolute;z-index:10000}#goog-gt-tt .original-text,.gt-hl-layer{clear:both;font-size:10pt;position:relative;text-align:justify;width:100%}#goog-gt-tt .title{color:#999;font-family:arial,sans-serif;margin:4px 0;text-align:left}#goog-gt-tt .close-button{display:none}#goog-gt-tt .logo{float:left;margin:0px}#goog-gt-tt .activity-links{display:inline-block}#goog-gt-tt .started-activity-container{display:none;width:100%}#goog-gt-tt .activity-root{margin-top:20px}#goog-gt-tt .left{float:left}#goog-gt-tt .right{float:right}#goog-gt-tt .bottom{min-height:15px;position:relative;height:1%}#goog-gt-tt .status-message{background:-moz-linear-gradient(top,#29910d 0%,#20af0e 100%);background:-webkit-linear-gradient(top,#29910d 0%,#20af0e 100%);background:-o-linear-gradient(top,#29910d 0%,#20af0e 100%);background:-ms-linear-gradient(top,#29910d 0%,#20af0e 100%);background:linear-gradient(top,#29910d 0%,#20af0e 100%);background:#29910d;border-radius:4px;-moz-border-radius:4px;-webkit-border-radius:4px;box-shadow:inset 0px 2px 2px #1e6609;-moz-box-shadow:inset 0px 2px 2px #1e6609;-webkit-box-shadow:inset 0px 2px 2px #1e6609;color:white;font-size:9pt;font-weight:bolder;margin-top:12px;padding:6px;text-shadow:1px 1px 1px #1e6609}#goog-gt-tt .activity-link{color:#1155cc;cursor:pointer;font-family:arial;font-size:11px;margin-right:15px;text-decoration:none}#goog-gt-tt textarea{font-family:arial;resize:vertical;width:100%;margin-bottom:10px;-webkit-border-radius:1px;-moz-border-radius:1px;border-radius:1px;border:1px solid #d9d9d9;border-top:1px solid silver;font-size:13px;height:auto;overflow-y:auto;padding:1px}#goog-gt-tt textarea:focus{-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,0.3);-moz-box-shadow:inset 0 1px 2px rgba(0,0,0,0.3);box-shadow:inset 0 1px 2px rgba(0,0,0,0.3);border:1px solid #4d90fe;outline:none}#goog-gt-tt .activity-cancel{margin-right:10px}#goog-gt-tt .translate-form{min-height:25px;vertical-align:middle;padding-top:8px}#goog-gt-tt .translate-form .activity-form{margin-bottom:5px;margin-bottom:0px}#goog-gt-tt .translate-form .activity-form input{display:inline-block;min-width:54px;*min-width:70px;border:1px solid #dcdcdc;border:1px solid rgba(0,0,0,0.1);text-align:center;color:#444;font-size:11px;font-weight:bold;height:27px;outline:0;padding:0 8px;vertical-align:middle;line-height:27px;margin:0 16px 0 0;box-shadow:0 1px 2px rgba(0,0,0,.1);-moz-box-shadow:0 1px 2px rgba(0,0,0,.1);-webkit-box-shadow:0 1px 2px rgba(0,0,0,.1);-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;-webkit-transition:all 0.218s;-moz-transition:all 0.218s;-o-transition:all 0.218s;transition:all 0.218s;background-color:#f5f5f5;background-image:-webkit-gradient(linear,left top,left bottom,from(#f5f5f5),to(#f1f1f1));background-image:-webkit-linear-gradient(top,#f5f5f5,#f1f1f1);background-image:-moz-linear-gradient(top,#f5f5f5,#f1f1f1);background-image:-ms-linear-gradient(top,#f5f5f5,#f1f1f1);background-image:-o-linear-gradient(top,#f5f5f5,#f1f1f1);background-image:linear-gradient(top,#f5f5f5,#f1f1f1);-webkit-user-select:none;-moz-user-select:none;cursor:default}#goog-gt-tt .translate-form .activity-form input:hover{border:1px solid #c6c6c6;color:#222;-webkit-transition:all 0.0s;-moz-transition:all 0.0s;-o-transition:all 0.0s;transition:all 0.0s;background-color:#f8f8f8;background-image:-webkit-gradient(linear,left top,left bottom,from(#f8f8f8),to(#f1f1f1));background-image:-webkit-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-moz-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-ms-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-o-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:linear-gradient(top,#f8f8f8,#f1f1f1)}#goog-gt-tt .translate-form .activity-form input:active{border:1px solid #c6c6c6;color:#333;background-color:#f6f6f6;background-image:-webkit-gradient(linear,left top,left bottom,from(#f6f6f6),to(#f1f1f1));background-image:-webkit-linear-gradient(top,#f6f6f6,#f1f1f1);background-image:-moz-linear-gradient(top,#f6f6f6,#f1f1f1);background-image:-ms-linear-gradient(top,#f6f6f6,#f1f1f1);background-image:-o-linear-gradient(top,#f6f6f6,#f1f1f1);background-image:linear-gradient(top,#f6f6f6,#f1f1f1)}#goog-gt-tt .translate-form .activity-form input:focus #goog-gt-tt .translate-form .activity-form input.focus #goog-gt-tt .translate-form .activity-form input:active,#goog-gt-tt .translate-form .activity-form input:focus:active,#goog-gt-tt .translate-form .activity-form input:.focus:active{box-shadow:inset 0 0 0 1px rgba(255,255,255,0.5);-webkit-box-shadow:inset 0 0 0 1px rgba(255,255,255,0.5);-moz-box-shadow:inset 0 0 0 1px rgba(255,255,255,0.5)}#goog-gt-tt .translate-form .activity-form input:focus,#goog-gt-tt .translate-form .activity-form input.focus{outline:none;border:1px solid #4d90fe;z-index:4!important}#goog-gt-tt .translate-form .activity-form input.selected{background-color:#eeeeee;background-image:-webkit-gradient(linear,left top,left bottom,from(#eeeeee),to(#e0e0e0));background-image:-webkit-linear-gradient(top,#eeeeee,#e0e0e0);background-image:-moz-linear-gradient(top,#eeeeee,#e0e0e0);background-image:-ms-linear-gradient(top,#eeeeee,#e0e0e0);background-image:-o-linear-gradient(top,#eeeeee,#e0e0e0);background-image:linear-gradient(top,#eeeeee,#e0e0e0);-webkit-box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1);-moz-box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1);box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1);border:1px solid #ccc;color:#333}#goog-gt-tt .translate-form .activity-form input.activity-submit{color:white;border-color:#3079ed;background-color:#4d90fe;background-image:-webkit-gradient(linear,left top,left bottom,from(#4d90fe),to(#4787ed));background-image:-webkit-linear-gradient(top,#4d90fe,#4787ed);background-image:-moz-linear-gradient(top,#4d90fe,#4787ed);background-image:-ms-linear-gradient(top,#4d90fe,#4787ed);background-image:-o-linear-gradient(top,#4d90fe,#4787ed);background-image:linear-gradient(top,#4d90fe,#4787ed)}#goog-gt-tt .translate-form .activity-form input.activity-submit:hover #goog-gt-tt .translate-form .activity-form input.activity-submit:focus,#goog-gt-tt .translate-form .activity-form input.activity-submit.focus #goog-gt-tt .translate-form .activity-form input.activity-submit:active{border-color:#3079ed;background-color:#357ae8;background-image:-webkit-gradient(linear,left top,left bottom,from(#4d90fe),to(#357ae8));background-image:-webkit-linear-gradient(top,#4d90fe,#357ae8);background-image:-moz-linear-gradient(top,#4d90fe,#357ae8);background-image:-ms-linear-gradient(top,#4d90fe,#357ae8);background-image:-o-linear-gradient(top,#4d90fe,#357ae8);background-image:linear-gradient(top,#4d90fe,#357ae8)}#goog-gt-tt .translate-form .activity-form input.activity-submit:hover{box-shadow:inset 0 0 0 1px #fff,0px 1px 1px rgba(0,0,0,0.1);-webkit-box-shadow:inset 0 0 0 1px #fff,0px 1px 1px rgba(0,0,0,0.1);-moz-box-shadow:inset 0 0 0 1px #fff,0px 1px 1px rgba(0,0,0,0.1)}#goog-gt-tt .translate-form .activity-form input:focus,#goog-gt-tt .translate-form .activity-form input.focus,#goog-gt-tt .translate-form .activity-form input:active,#goog-gt-tt .translate-form .activity-form input:hover,#goog-gt-tt .translate-form .activity-form input.activity-submit:focus,#goog-gt-tt .translate-form .activity-form input.activity-submit.focus,#goog-gt-tt .translate-form .activity-form input.activity-submit:active,#goog-gt-tt .translate-form .activity-form input.activity-submit:hover{border-color:#3079ed}#goog-gt-tt .gray{color:#999;font-family:arial,sans-serif}#goog-gt-tt .alt-helper-text{color:#999;font-size:11px;font-family:arial,sans-serif;margin:15px 0px 5px 0px}#goog-gt-tt .alt-error-text{color:#800;display:none;font-size:9pt}.goog-text-highlight{background-color:#c9d7f1;-webkit-box-shadow:2px 2px 4px #9999aa;-moz-box-shadow:2px 2px 4px #9999aa;box-shadow:2px 2px 4px #9999aa;box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;position:relative}#goog-gt-tt .alt-menu.goog-menu{background:#ffffff;border:1px solid #dddddd;-webkit-box-shadow:0px 3px 3px #888;-moz-box-shadow:0px 2px 20px #888;box-shadow:0px 2px 4px #99a;min-width:0;outline:none;padding:0;position:absolute;z-index:2000}#goog-gt-tt .alt-menu .goog-menuitem{cursor:pointer;padding:2px 5px 5px;margin-right:0px;border-style:none}#goog-gt-tt .alt-menu div.goog-menuitem:hover{background:#ddd}#goog-gt-tt .alt-menu .goog-menuitem h1{font-size:100%;font-weight:bold;margin:4px 0px}#goog-gt-tt .alt-menu .goog-menuitem strong{color:#345aad}#goog-gt-tt .goog-submenu-arrow{text-align:right;position:absolute;right:0;left:auto}#goog-gt-tt .goog-menuitem-rtl .goog-submenu-arrow{text-align:left;position:absolute;left:0;right:auto}#goog-gt-tt .gt-hl-text,#goog-gt-tt .trans-target-highlight{background-color:#f1ea00;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;-moz-box-shadow:rgba(0,0,0,.5) 3px 3px 4px;-webkit-box-shadow:rgba(0,0,0,.5) 3px 3px 4px;box-shadow:rgba(0,0,0,.5) 3px 3px 4px;box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;color:#f1ea00;cursor:pointer;margin:-2px -2px -2px -3px;padding:2px 2px 2px 3px;position:relative}#goog-gt-tt .trans-target-highlight{color:#222}#goog-gt-tt .gt-hl-layer{color:white;position:absolute!important}#goog-gt-tt .trans-target,#goog-gt-tt .trans-target .trans-target-highlight{background-color:#c9d7f1;border-radius:4px 4px 0px 0px;-webkit-border-radius:4px 4px 0px 0px;-moz-border-radius:4px 4px 0px 0px;-moz-box-shadow:rgba(0,0,0,.5) 3px 3px 4px;-webkit-box-shadow:rgba(0,0,0,.5) 3px 3px 4px;box-shadow:rgba(0,0,0,.5) 3px 3px 4px;box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;cursor:pointer;margin:-2px -2px -2px -3px;padding:2px 2px 3px 3px;position:relative}#goog-gt-tt span:focus{outline:none}#goog-gt-tt .trans-edit{background-color:transparent;border:1px solid #4d90fe;border-radius:0em;-webkit-border-radius:0em;-moz-border-radius:0em;margin:-2px;padding:1px}#goog-gt-tt .gt-trans-highlight-l{border-left:2px solid red;margin-left:-2px}#goog-gt-tt .gt-trans-highlight-r{border-right:2px solid red;margin-right:-2px}#goog-gt-tt #alt-input{padding:2px}#goog-gt-tt #alt-input-text{font-size:11px;padding:2px 2px 3px;margin:0;background-color:#fff;color:#333;border:1px solid #d9d9d9;border-top:1px solid #c0c0c0;display:inline-block;vertical-align:top;height:21px;box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-webkit-border-radius:1px}#goog-gt-tt #alt-input-text:hover{border:1px solid #b9b9b9;border-top:1px solid #a0a0a0;-webkit-box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1);-moz-box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1);box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1)}#goog-gt-tt #alt-input-text:focus{-webkit-box-shadow:inset 0px 1px 2px rgba(0,0,0,0.3);-moz-box-shadow:inset 0px 1px 2px rgba(0,0,0,0.3);box-shadow:inset 0px 1px 2px rgba(0,0,0,0.3);outline:none;border:1px solid #4d90fe}#goog-gt-tt #alt-input-submit{font-size:11px;padding:2px 6px 3px;margin:0 0 0 2px;height:21px}</style><style class="darkreader darkreader--sync" media="screen"></style></head>
+<body>
+<h1>Lode's Computer Graphics Tutorial</h1>
+<h1>Raycasting<br></h1>
+<h2>Table of Contents<br></h2>
+<ul>
+<li><a href="https://lodev.org/cgtutor/raycasting.html#Introduction">Introduction</a></li>
+<li><a href="https://lodev.org/cgtutor/raycasting.html#The_Basic_Idea_">The Basic Idea</a></li>
+<li><a href="https://lodev.org/cgtutor/raycasting.html#Untextured_Raycaster_">Untextured Raycaster</a></li>
+<li><a href="https://lodev.org/cgtutor/raycasting.html#Textured_Raycaster">Textured Raycaster</a></li>
+<li><a href="https://lodev.org/cgtutor/raycasting.html#Wolfenstein_3D_Textures_">Wolfenstein 3D Textures</a><br></li>
+<li><a href="https://lodev.org/cgtutor/raycasting.html#Performance">Performance Considerations</a><br></li>
+</ul>
+<a href="https://lodev.org/cgtutor/index.html">Back to Index</a>
+<h2><a name="Introduction" id="Introduction"></a>Introduction</h2>
+Raycasting is a rendering technique to create a 3D perspective in a
+2D map. Back when computers were slower it wasn't possible to run
+real 3D engines in realtime, and raycasting was the first solution.
+Raycasting can go very fast, because only a calculation has to be
+done for every vertical line of the screen. The most well known
+game that used this technique, is of course Wolfenstein 3D.<br>
+<br>
+<img alt="" src="./r_files/wolf3d.jpg" style="width: 320px; height: 200px;"><br>
+<br>
+The raycasting engine of Wolfenstein 3D was very limited, allowing
+it to run on a even a 286 computer: all the walls have the same
+height and are orthogonal squares on a 2D grid, as can be seen in
+this screenshot from a mapeditor for Wolf3D:<br>
+<br>
+<img alt="" src="./r_files/wolfmapedit.jpg" style="width: 319px; height: 239px;"><br>
+<br>
+Things like stairs, jumping or height differences are impossible to
+make with this engine. Later games such as Doom and Duke Nukem 3D
+also used raycasting, but much more advanced engines that allowed
+sloped walls, different heights, textured floors and ceilings,
+transparent walls, etc... The sprites (enemies, objects and
+goodies) are 2D images, but sprites aren't discussed in this
+tutorial for now.<br>
+<br>
+Ray<span style="font-style: italic;">casting</span> is not the same
+as ray<span style="font-style: italic;">tracing</span>! Raycasting
+is a fast semi-3D technique that works in realtime even on 4MHz
+graphical calculators, while raytracing is a realistic rendering
+technique that supports reflections and shadows in true 3D scenes,
+and only recently computers became fast enough to do it in realtime
+for reasonably high resolutions and complex scenes.<br>
+<br>
+The code of the untextured and textured raycasters is given in this
+document completely, but it's quite long, you can also download the
+code instead:<br>
+<br>
+<a href="https://lodev.org/cgtutor/files/raycaster_flat.cpp">raycaster_flat.cpp</a><br>
+<a href="https://lodev.org/cgtutor/files/raycaster_textured.cpp">raycaster_textured.cpp</a><br>
+<br>
+<br>
+<h2><a name="The_Basic_Idea_" id="The_Basic_Idea_"></a>The Basic Idea<br></h2>
+The basic idea of raycasting is as follows: the map is a 2D square
+grid, and each square can either be 0 (= no wall), or a positive
+value (= a wall with a certain color or texture).<br>
+<br>
+For every x of the screen (i.e. for every vertical stripe of the
+screen), send out a ray that starts at the player location and with
+a direction that depends on both the player's looking direction,
+and the x-coordinate of the screen. Then, let this ray move forward
+on the 2D map, until it hits a map square that is a wall. If it hit
+a wall, calculate the distance of this hit point to the player, and
+use this distance to calculate how high this wall has to be drawn
+on the screen: the further away the wall, the smaller it's on
+screen, and the closer, the higher it appears to be. These are all
+2D calculations. This image shows a top down overview of two such
+rays (red) that start at the player (green dot) and hit blue
+walls:<br>
+<br>
+<img alt="" src="./r_files/raycastgrid.gif" style="width: 192px; height: 192px;"><br>
+<br>
+To find the first wall that a ray encounters on its way, you have
+to let it start at the player's position, and then all the time,
+check whether or not the ray is inside a wall. If it's inside a
+wall (hit), then the loop can stop, calculate the distance, and
+draw the wall with the correct height. If the ray position is not
+in a wall, you have to trace it further: add a certain value to
+its position, in the direction of the direction of this ray, and
+for this new position, again check if it's inside a wall or not.
+Keep doing this until finally a wall is hit.<br>
+<br>
+A human can immediatly see where the ray hits the wall, but it's
+impossible to find which square the ray hits immediatly with a
+single formula, because a computer can only check a finite number
+of positions on the ray. Many raycasters add a constant value to
+the ray each step, but then there's a chance that it may miss a
+wall! For example, with this red ray, its position was checked at
+every red spot:<br>
+<br>
+<img alt="" src="./r_files/raycastmiss.gif" style="width: 192px; height: 192px;"><br>
+<br>
+As you can see, the ray goes straight through the blue wall, but
+the computer didn't detect this, because it only checked at the
+positions with the red dots. The more positions you check, the
+smaller the chance that the computer won't detect a wall, but the
+more calculations are needed. Here the step distance was halved, so
+now he detects that the ray went through a wall, though the
+position isn't completely correct:<br>
+<br>
+<img alt="" src="./r_files/raycastmiss2.gif" style="width: 192px; height: 192px;"><br>
+<br>
+For infinite precision with this method, an infinitely small step
+size, and thus an infinite number of calculations would be needed!
+That's pretty bad, but luckily, there's a better method that
+requires only very few calculations and yet will detect every wall:
+the idea is to check at every side of a wall the ray will
+encounter. We give each square width 1, so each side of a wall is
+an integer value and the places in between have a value after the
+point. Now the step size isn't constant, it depends on the distance
+to the next side:<br>
+<br>
+<img alt="" src="./r_files/raycasthit.gif" style="width: 192px; height: 192px;"><br>
+<br>
+As you can see on the image above, the ray hits the wall exactly
+where we want it. In the way presented in this tutorial, an
+algorithm is used that's based on DDA or "Digital Differential
+Analysis". DDA is a fast algorithm typically used on square grids
+to find which squares a line hits (for example to draw a line on a
+screen, which is a grid of square pixels). So we can also use it to
+find which squares of the map our ray hits, and stop the algorithm
+once a square that is a wall is hit.<br>
+<br>
+Some raytracers work with Euclidean angles to represent the
+direction of the player and the rays, and determinate the Field Of
+View with another angle. I found however that it's much easier to
+work with vectors and a camera instead: the position of the player
+is always a vector (an x and a y coordinate), but now, we make the
+direction a vector as well: so the direction is now determinated by
+two values: the x and y coordinate of the direction. A direction
+vector can be seen as follows: if you draw a line in the direction
+the player looks, through the position of the player, then every
+point of the line is the sum of the position of the player, and a
+multiple of the direction vector. The length of a direction vector
+doesn't really matter, only its direction. Multiplying x and y by
+the same value changes the length but keeps the same
+direction.<br>
+<br>
+This method with vectors also requires an extra vector, which is
+the camera plane vector. In a true 3D engine, there's also a camera
+plane, and there this plane is really a 3D plane so two vectors (u
+and v) are required to represent it. Raycasting happens in a 2D map
+however, so here the camera plane isn't really a plane, but a line,
+and is represented with a single vector. The camera plane should
+always be perpendicular on the direction vector. The camera plane
+represents the surface of the computer screen, while the direction
+vector is perpendicular on it and points inside the screen. The
+position of the player, which is a single point, is a point in
+front of the camera plane. A certain ray of a certain x-coordinate
+of the screen, is then the ray that starts at this player position,
+and goes through that position on the screen or thus the camera
+plane.<br>
+<br>
+<img alt="" src="./r_files/raycastingcamera.gif" style="width: 256px; height: 180px;"><br>
+<br>
+The image above represents such a 2D camera. The green spot is the
+position (vector "pos"). The black line, ending in the black spot,
+represents the direction vector (vector "dir"), so the position of
+the black dot is pos+dir. The blue line represents the full camera
+plane, the vector from the black dot to the right blue dot
+represents the vector "plane", so the position of the right blue
+point is pos+dir+plane, and the posistion of the left blue dot is
+pos+dir-plane (these are all vector additions).<br>
+<br>
+The red lines in the image are a few rays. The direction of these
+rays is easily calculated out of the camera: it's the sum of the
+direction vector of the camear, and a part of the plane vector of
+the camera: for example the third red ray on the image, goes
+through the right part of the camera plane at the point about 1/3th
+of its length. So the direction of this ray is dir + plane*1/3.
+This ray direction is the vector rayDir, and the X and Y component
+of this vector are then used by the DDA algorithm.<br>
+<br>
+The two outer lines, are the left and right border of the screen,
+and the angle between those two lines is called the Field Of Vision
+or FOV. The FOV is determinated by the ratio of the length of the
+direction vector, and the length of the plane. Here are a few
+examples of different FOV's:<br>
+<br>
+If the direction vector and the camera plane vector have the same
+length, the FOV will be 90°:<br>
+<br>
+<img alt="" src="./r_files/raycastingFOV90.gif" style="width: 256px; height: 180px;"><br>
+<br>
+If the direction vector is much longer than the camera plane, the
+FOV will be much smaller than 90°, and you'll have a very
+narrow vision. You'll see everything more detailed though and there
+will be less depth, so this is the same as zooming in:<br>
+<br>
+<img alt="" src="./r_files/raycastingFOV0.gif" style="width: 118px; height: 307px;"><br>
+<br>
+If the direction vector is shorter than the camera plane, the FOV
+will be larger than 90° (180° is the maximum, if the
+direction vector is close to 0), and you'll have a much wider
+vision, like zooming out:<br>
+<br>
+<img alt="" src="./r_files/raycastingFOV180.gif" style="width: 255px; height: 69px;"><br>
+<br>
+<br>
+<br>
+When the player rotates, the camera has to rotate, so both the
+direction vector and the plane vector have to be rotated. Then, the
+rays will all automaticly rotate as well.<br>
+<br>
+<img alt="" src="./r_files/raycastingcamerarotate.gif" style="width: 219px; height: 228px;"><br>
+<br>
+To rotate a vector, multiply it with the rotation matrix<br>
+<br>
+<span style="font-family: monospace;">[ cos(a) -sin(a)
+]</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">[ sin(a)&nbsp; cos(a)
+]</span><br>
+<br>
+If you don't know about vectors and matrices, try to find a
+tutorial with google, an appendix about those is planned for this
+tutorial later.<br>
+<br>
+There's nothing that forbids you to use a camera plane that isn't
+perpendicular to the direction, but the result will look like a
+"skewed" world.<br>
+
+
+<h2><a name="Untextured_Raycaster_" id="Untextured_Raycaster_"></a>Untextured Raycaster<br></h2>
+
+
+Download the source code here: <a href="https://lodev.org/cgtutor/files/raycaster_flat.cpp">raycaster_flat.cpp</a>
+<br><br>
+To start with the basics, we'll begin with an untextured raycaster.
+This example also includes an fps counter (frames per second), and
+input keys with collision detection to move and rotate.
+<br><br>
+The map of the world is a 2D array, where each value represents a
+square. If the value is 0, that square represents an empty,
+walkthroughable square, and if the value is higher than 0, it
+represents a wall with&nbsp; a certain color or texture. The map
+declared here is very small, only 24 by 24 squares, and is defined
+directly in the code. For a real game, like Wolfenstein 3D, you use
+a bigger map and load it from a file instead. All the zero's in the
+grid are empty space, so basicly you see a very big room, with a
+wall around it (the values 1), a small room inside it (the values
+2), a few pilars (the values 3), and a corridor with a room (the
+values 4). Note that this code isn't inside any function yet, put
+it before the main function starts.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">#define mapWidth 24
+#define mapHeight 24
+#define screenWidth 640
+#define screenHeight 480
+
+int worldMap[mapWidth][mapHeight]=
+{
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+};</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+A first few variables are declared: posX and posY represent the
+position vector of the player, dirX and dirY represent the
+direction of the player, and planeX and planeY the camera plane of
+the player. Make sure the camera plane is perpendicular to the
+direction, but you can change the length of it. The ratio between
+the length of the direction and the camera plane determinates the
+FOV, here the direction vector is a bit longer than the camera
+plane, so the FOV will be smaller than 90° (more precisely, the
+FOV is 2 * atan(0.66/1.0)=66°, which is perfect for a first person
+shooter game). Later on when rotating around with the input keys,
+the values of dir and plane will be changed, but they'll always
+remain perpendicular and keep the same length.<br>
+<br>
+The variables time and oldTime will be used to store the time of
+the current and the previous frame, the time difference between
+these two can be used to determinate how much you should move when
+a certain key is pressed (to move a constant speed no matter how
+long the calculation of the frames takes), and for the FPS
+counter.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">int main(int <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">/*argc*/, char */*argv*/</span>[])
+{
+  double posX = 22, posY = 12;  <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//x and y start position
+</span>  double dirX = -1, dirY = 0; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//initial direction vector
+</span>  double planeX = 0, planeY = 0.66; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//the 2d raycaster version of camera plane
+</span>
+  double time = 0; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//time of current frame
+</span>  double oldTime = 0; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//time of previous frame</span></span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+The rest of the main function starts now. First, the screen is created with a
+resolution of choice. If you pick a large resolution, like
+1280*1024, the effect will go quite slow, not because the raycating
+algorithm is slow, but simply because uploading a whole screen from
+the CPU to the video card goes so slow.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">  screen(screenWidth, screenHeight, 0, <span style="color: red; --darkreader-inline-color:#ff1a1a;" data-darkreader-inline-color="">"Raycaster"</span>);</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+After setting up the screen, the gameloop starts, this is the loop
+that draws a whole frame and reads the input every time.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">  while(!done())
+  {
+</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+Here starts the actual raycasting. The raycasting loop is a for
+loop that goes through every x, so there isn't a calculation for
+every pixel of the screen, but only for every vertical stripe,
+which isn't much at all! To begin the raycasting loop, some
+variables are delcared and calculated:<br>
+<br>
+The ray starts at the position of the player (posX, posY).<br>
+<br>
+cameraX is the x-coordinate on the camera plane that the current
+x-coordinate of the screen represents, done this way so that the
+right side of the screen will get coordinate 1, the center of the
+screen gets coordinate 0, and the left side of the screen gets
+coordinate -1. Out of this, the direction of the ray can be
+calculated as was explained earlier: as the sum of the direction
+vector, and a part of the plane vector. This has to be done both
+for the x and y coordinate of the vector (since adding two vectors
+is adding their x-coordinates, and adding their
+y-coordinates).<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">    for(int x = 0; x &lt; w; x++)
+    {
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//calculate ray position and direction
+</span>      double cameraX = 2 * x / double(w) - 1; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//x-coordinate in camera space
+</span>      double rayDirX = dirX + planeX * cameraX;
+      double rayDirY = dirY + planeY * cameraX;</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+In the next code piece, more variables are declared and calculated,
+these have relevance to the DDA algorithm:<br>
+<br>
+mapX and mapY represent the current square of the map the ray is
+in. The ray position itself is a floating point number and contains
+both info about in which square of the map we are, and <span style="font-style: italic;">where</span> in that square we are, but mapX
+and mapY are only the coordinates of that square.<br>
+<br>
+sideDistX and sideDistY are initially the distance the ray has to
+travel from its start position to the first x-side and the first
+y-side. Later in the code they will be incremented while steps are taken.<br>
+<br>
+deltaDistX and deltaDistY are the distance the ray has to travel to
+go from 1 x-side to the next x-side, or from 1 y-side to the next
+y-side. The following image shows the initial sideDistX, sideDistY
+and deltaDistX and deltaDistY:<br>
+<br>
+<img alt="" src="./r_files/raycastdelta.gif" style="width: 190px; height: 318px;"><br>
+<br>
+When deriving deltaDistX geometrically you get, with Pythagoras, the formulas below.
+For the blue triangle (deltaDistX), one side has length 1 (as it is exactly one cell) and the other
+has length raydirY / raydirX because it is exaclty the amount of units the ray goes in
+the y-direction when taking 1 step in the X-direction. For the green triangle (deltaDistY), the
+formula is similar.
+<p>
+deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))
+<br>
+deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY))
+</p><p>
+But this can be simplified to:
+</p><p>
+deltaDistX = abs(|rayDir| / rayDirX)
+<br>
+deltaDistY = abs(|rayDir| / rayDirY)
+</p><p>
+Where |rayDir| is the length of the vector rayDirX, rayDirY (that is sqrt(rayDirX * rayDirX + rayDirY * rayDirY)):
+you can indeed verify that e.g. sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX)) equals
+abs(sqrt(rayDirX * rayDirX + rayDirY * rayDirY) / rayDirX).
+However, we can use 1 instead of |rayDir|, because only the *ratio* between deltaDistX and deltaDistY matters
+for the DDA code that follows later below, so we get:
+</p><p>
+deltaDistX = abs(1 / rayDirX)
+<br>
+deltaDistY = abs(1 / rayDirY)
+</p><p>
+Due to this, the deltaDist and sideDist values used in the code do not match the lengths shown in the picture above,
+but their relative sizes all still match.
+</p><p>
+[thanks to Artem for spotting this simplification]
+
+</p><p>
+The variable perpWallDist will be used later to calculate the length
+of the ray.<br>
+<br>
+The DDA algorithm will always jump exactly one square each loop,
+either a square in the x-direction, or a square in the y-direction.
+If it has to go in the negative or positive x-direction, and the
+negative or positive y-direction will depend on the direction of
+the ray, and this fact will be stored in stepX and stepY. Those
+variables are always either -1 or +1.<br>
+<br>
+Finally, hit is used to determinate whether or not the coming loop
+may be ended, and side will contain if an x-side or a y-side of a
+wall was hit. If an x-side was hit, side is set to 0, if an y-side
+was hit, side will be 1. By x-side and y-side, I mean the lines of
+the grid that are the borders between two squares.<br>
+<br>
+</p><center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//which box of the map we're in
+</span>      int mapX = int(posX);
+      int mapY = int(posY);
+
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//length of ray from current position to next x or y-side
+</span>      double sideDistX;
+      double sideDistY;
+
+       <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//length of ray from one x or y-side to next x or y-side
+</span>      double deltaDistX = (rayDirX == 0) ? 1e30 : std::abs(1 / rayDirX);
+      double deltaDistY = (rayDirY == 0) ? 1e30 : std::abs(1 / rayDirY);
+      double perpWallDist;
+
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//what direction to step in x or y-direction (either +1 or -1)
+</span>      int stepX;
+      int stepY;
+
+      int hit = 0; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//was there a wall hit?
+</span>      int side; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//was a NS or a EW wall hit?</span></span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<p>
+NOTE: If rayDirX or rayDirY are 0, the division through zero is avoided by setting
+it to a very high value 1e30. If you are using a language such as C++, Java or JS,
+this is not actually needed, as it supports the IEEE 754 floating point standard, which
+gives the result Infinity, which works correctly in the code below. However, some other
+languages, such as Python, disallow division through zero, so the more generic code that
+works everywhere is given above. 1e30 is an arbitrarily chosen high enough number and
+can be set to Infinity if your programming language supports assiging that value.
+</p><p>
+Now, before the actual DDA can start, first stepX, stepY, and the
+initial sideDistX and sideDistY still have to be calculated.<br>
+<br>
+If the ray direction has a negative x-component, stepX is -1, if
+the ray direciton has a positive x-component it's +1. If the
+x-component is 0, it doesn't matter what value stepX has since
+it'll then be unused.<br>
+The same goes for the y-component.<br>
+<br>
+If the ray direction has a negative x-component, sideDistX is the
+distance from the ray starting position to the first side to the
+left, if the ray direciton has a positive x-component the first
+side to the right is used instead.<br>
+The same goes for the y-component, but now with the first side
+above or below the position.<br>
+For these values, the integer value mapX is used and the real
+position subtracted from it, and 1.0 is added in some of the cases
+depending if the side to the left or right, of the top or the
+bottom is used. Then you get the perpendicular distance to this
+side, so multiply it with deltaDistX or deltaDistY to get the real
+Euclidean distance.<br>
+<br>
+</p><center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//calculate step and initial sideDist
+</span>      if (rayDirX &lt; 0)
+      {
+        stepX = -1;
+        sideDistX = (posX - mapX) * deltaDistX;
+      }
+      else
+      {
+        stepX = 1;
+        sideDistX = (mapX + 1.0 - posX) * deltaDistX;
+      }
+      if (rayDirY &lt; 0)
+      {
+        stepY = -1;
+        sideDistY = (posY - mapY) * deltaDistY;
+      }
+      else
+      {
+        stepY = 1;
+        sideDistY = (mapY + 1.0 - posY) * deltaDistY;
+      }</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+Now the actual DDA starts. It's a loop that increments the ray with
+1 square every time, until a wall is hit. Each time, either it
+jumps a square in the x-direction (with stepX) or a square in the
+y-direction (with stepY), it always jumps 1 square at once. If the
+ray's direction would be the x-direction, the loop will only have
+to jump a square in the x-direction everytime, because the ray will
+never change its y-direction. If the ray is a bit sloped to the
+y-direction, then every so many jumps in the x-direction, the ray
+will have to jump one square in the y-direction. If the ray is
+exactly the y-direction, it never has to jump in the x-direction,
+etc...<br>
+<br>
+sideDistX and sideDistY get incremented with deltaDistX with every
+jump in their direction, and mapX and mapY get incremented with
+stepX and stepY respectively.<br>
+<br>
+When the ray has hit a wall, the loop ends, and then we'll know
+whether an x-side or y-side of a wall was hit in the variable
+"side", and what wall was hit with mapX and mapY. We won't know
+exactly where the wall was hit however, but that's not needed in
+this case because we won't use textured walls for now.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//perform DDA
+</span>      while (hit == 0)
+      {
+        <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//jump to next map square, either in x-direction, or in y-direction
+</span>        if (sideDistX &lt; sideDistY)
+        {
+          sideDistX += deltaDistX;
+          mapX += stepX;
+          side = 0;
+        }
+        else
+        {
+          sideDistY += deltaDistY;
+          mapY += stepY;
+          side = 1;
+        }
+        <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//Check if ray has hit a wall
+</span>        if (worldMap[mapX][mapY] &gt; 0) hit = 1;
+      } </span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+After the DDA is done, we have to calculate the distance of the ray
+to the wall, so that we can calculate how high the wall has to be
+drawn after this.
+<p>
+We don't use the Euclidean distance to the point representing player, but
+instead the distance to the camera plane (or, the distance of the point
+projected on the camera direction to the player), to avoid the fisheye effect.
+The fisheye effect is an effect you see if you use the real
+distance, where all the walls become rounded, and can make you
+sick if you rotate.
+</p><p>
+The following image shows why we take distance to camera
+plane instead of player. With P the player, and the black line the camera plane:
+To the left of the player, a few red rays are shown from hitpoints on the wall to
+the player, representing Euclidean distance. On the right side of the player, a
+few green rays are shown going from hitpoints on the wall directly to the camera
+plane instead of to the player. So the lengths of those green lines are examples
+of the perpendicular distance we'll use instead of direct Euclidean distance.
+</p><p>
+In the image, the player is looking directly at the wall, and in that case you
+would expect the wall's bottom and top to form a perfectly horizontal line on the
+screen. However, the red rays all have a different lenght, so would compute different
+wall heights for different vertical stripes, hence the rounded effect. The green rays
+on the right all have the same length, so will give the correct result. The same
+still apllies for when the player rotates (then the camera plane is no longer horizontal
+and the green lines will have different lengths, but still with a constant change between each)
+and the walls become diagonal but straight lines on the screen. This explanation is somewhat handwavy but gives the idea.
+</p><p>
+<img alt="perpWallDist" src="./r_files/raycastdist.png" style="width: 265px; height: 256px;">
+</p><p>
+Note that this part of the code isn't "fisheye correction", such a
+correction isn't needed for the way of raycasting used here, the
+fisheye effect is simply avoided by the way the distance is
+calculated here. It's even easier to calculate this perpendicular
+distance than the real distance, we don't even need to know the
+exact location where the wall was hit.
+</p><p>
+This perpenducular distance is called "perpWallDist" in the code. One way to compute it is
+to use the formula for shortest distance from a point to a line, where the point is where the wall
+was hit, and the line is the camera plane:
+</p><p>
+<img alt="perpWallDist" src="./r_files/raycastperpwalldist2.png" style="width: 305px; height: 309px;">
+</p><p>
+However, it can be computed simpler than that: due to how deltaDist and sideDist were scaled by
+a factor of |rayDir| above, the length of sideDist already almost equals perpWallDist. We just need
+to subtract deltaDist once from it, going one step back, because in the DDA steps above we went one step
+further to end up inside the wall.<br>
+<br>
+Depending on whether the ray hit an X side or Y side, the formula is computed using sideDistX, or sideDistY.
+</p><p>
+</p><center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//Calculate distance projected on camera direction (Euclidean distance would give fisheye effect!)
+</span>      if(side == 0) perpWallDist = (sideDistX - deltaDistX);
+      else          perpWallDist = (sideDistY - deltaDistY);</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+
+<p>
+A more detailed derivation of the perpWallDist formula is depicted in the image below, for the side == 1 case.
+</p><p>
+Meaning of the points:
+</p><p>
+</p><ul>
+<li>P: position of the player, (posX, posY) in the code</li>
+<li>H: hitpoint of the ray on the wall. Its y-position is known to be mapY + (1 - stepY) / 2</li>
+<li>yDist matches "(mapY + (1 - stepY) / 2 - posY)", this is the y coordinate of the Euclidean distance vector, in world coordinates. Here, (1 - stepY) / 2) is a correction term that is 0 or 1 based on positive or negative y direction, which is also used in the initialization of sideDistY.</li>
+<li>dir: the main player looking direction, given by dirX,dirY in the code. The length of this vector is always exactly 1. This matches the looking direction in the center of the screen, as opposed to the direction of the current ray. It is perpendicular to the camera plane, and perpWallDist is parallel to this.</li>
+<li>orange dotted line (may be hard to see, use CTRL+scrollwheel or CTRL+plus to zoom in a desktop browser to see it better): the value that was added to dir to get rayDir. Importantly, this is parallel to the camera plane, perpendicular to dir.</li>
+<li>A: point of the camera plane closest to H, the point where perpWallDist intersects with camera plane</li>
+<li>B: point of X-axis through player closest to H, point where yDist crosses the world X-axis through the player</li>
+<li>C: point at player position + rayDirX</li>
+<li>D: point at player position + rayDir.</li>
+<li>E: This is point D with the dir vector subtracted, in other words, E + dir = D.</li>
+<li>points A, B, C, D, E, H and P are used in the explanation below: they form triangles which are considered: BHP, CDP, AHP and DEP.</li>
+</ul>
+
+The actual derivation:
+
+<ul>
+<li>1: Triangles PBH and PCD have the same shape but different size, so same ratios of edges</li>
+<li>2: Given step 1, the triangles show that the ratio yDist / rayDirY  is equal to the ratio Euclidean / |rayDir|, so now we can derive perpWallDist = Euclidean / |rayDir| instead.</li>
+<li>3: Triangles AHP and EDP  have the same shape but different size, so same ratios of edges. Length of edge ED, that is |ED|, equals length of dir, |dir|, which is 1. Similarly, |DP| equals |rayDir|.</li>
+<li>4: Given step 3, the triangles show that the ratio Euclidean / |rayDir| = perpWallDist / |dir| = perpWallDist / 1.</li>
+<li>5: Combining steps 4 and 2 shows that perpWallDist = yDist / rayDirY, where yDist is mapY + (1 - stepY) / 2) - posY</li>
+<li>6: In the code, sideDistY - deltaDistY, after the DDA steps, equals (posY + (1 - stepY) / 2 - mapY) * deltaDistY (given that sideDistY is computed from posY and mapY), so yDist = (sideDistY - deltaDistY) / deltaDistY</li>
+<li>7: Given that deltaDistY = 1 / |rayDirY|, step 6 gives that yDist = (sideDistY - deltaDistY) * |rayDirY| </li>
+<li>8: Combining steps 5 and 7 gives perpWallDist = yDist / rayDirY = (sideDistY - deltaDistY) / |rayDirY| / rayDirY.</li>
+<li>9: Given how cases for signs of sideDistY and deltaDistY in the code are handled the absolute value doesn't matter, and equals (sideDistY - deltaDistY), which is the formula used</li>
+</ul>
+
+<p>
+<img alt="perpWallDist" src="./r_files/raycastperpwalldist.png" style="width: 265px; height: 256px;">
+</p><p>
+
+</p><p>
+[Thanks to Thomas van der Berg in 2016 for pointing out simplifications of the code (perpWallDist could be simplified and the value reused for wallX).
+<br>
+[Thanks to Roux Morgan in 2020 for helping to clarify the explanation of perpWallDist, the tutorial was lacking some information before this]
+<br>
+[Thanks to Noah Wagner and Elias for finding further simplifications for perpWallDist]
+</p><p>
+Now that we have the calculated distance (perpWallDist), we can calculate the height of the line
+that has to be drawn on screen: this is the inverse of perpWallDist,
+and then multiplied by h, the height in pixels of the screen, to
+bring it to pixel coordinates. You can of course also multiply it
+with another value, for example 2*h, if you want to walls to be
+higher or lower. The value of h will make the walls look like cubes
+with equal height, width and depth, while large values will create
+higher boxes (depending on your monitor).<br>
+<br>
+Then out of this lineHeight (which is thus the height of the
+vertical line that should be drawn), the start and end position of
+where we should really draw are calculated. The center of the wall
+should be at the center of the screen, and if these points lie
+outside the screen, they're capped to 0 or h-1.<br>
+<br>
+</p><center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//Calculate height of line to draw on screen
+</span>      int lineHeight = (int)(h / perpWallDist);
+
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//calculate lowest and highest pixel to fill in current stripe
+</span>      int drawStart = -lineHeight / 2 + h / 2;
+      if(drawStart &lt; 0)drawStart = 0;
+      int drawEnd = lineHeight / 2 + h / 2;
+      if(drawEnd &gt;= h)drawEnd = h - 1;</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+Finally, depending on what number the wall that was hit has, a
+color is chosen. If an y-side was hit, the color is made darker,
+this gives a nicer effect. And then the vertical line is drawn with
+the verLine command. This ends the raycasting loop, after it has
+done this for every x at least.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//choose wall color
+</span>      ColorRGB color;
+      switch(worldMap[mapX][mapY])
+      {
+        case 1:  color = RGB_Red;  break; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//red
+</span>        case 2:  color = RGB_Green;  break; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//green
+</span>        case 3:  color = RGB_Blue;   break; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//blue
+</span>        case 4:  color = RGB_White;  break; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//white
+</span>        default: color = RGB_Yellow; break; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//yellow
+</span>      }
+
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//give x and y sides different brightness
+</span>      if (side == 1) {color = color / 2;}
+
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//draw the pixels of the stripe as a vertical line
+</span>      verLine(x, drawStart, drawEnd, color);
+    }</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+After the raycasting loop is done, the time of the current and the
+previous frame are calculated, the FPS (frames per second) is
+calculated and printed, and the screen is redrawn so that
+everything (all the walls, and the value of the fps counter)
+becomes visible. After that the backbuffer is cleared with cls(),
+so that when we draw the walls again the next frame, the floor and
+ceiling will be black again instead of still containing pixels from
+the previous frame.<br>
+<br>
+The speed modifiers use frameTime, and a constant value, to
+determinate the speed of the moving and rotating of the input keys.
+Thanks to using the frameTime, we can make sure that the moving and
+rotating speed is independent of the processor speed.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">    <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//timing for input and FPS counter
+</span>    oldTime = time;
+    time = getTicks();
+    double frameTime = (time - oldTime) / 1000.0; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//frameTime is the time this frame has taken, in seconds
+</span>    print(1.0 / frameTime); <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//FPS counter
+</span>    redraw();
+    cls();
+
+    <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//speed modifiers
+</span>    double moveSpeed = frameTime * 5.0; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//the constant value is in squares/second
+</span>    double rotSpeed = frameTime * 3.0; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//the constant value is in radians/second</span></span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+The last part is the input part, the keys are read.<br>
+<br>
+If the up arrow is pressed, the player will move forward: add dirX
+to posX, and dirY to posY. This assumes that dirX and dirY are
+normalized vectors (their length is 1), but they were initially set
+like this, so it's ok. There's also a simple collision detection
+built in, namely if the new position will be inside a wall, you
+won't move. This collision detection can be improved however, for
+example by checking if a circle around the player won't go inside
+the wall instead of just a single point.<br>
+<br>
+The same is done if you press the down arrow, but then the
+direction is subtracted instead.<br>
+<br>
+To rotate, if the left or right arrow is pressed, both the
+direction vector and plane vector are rotated by using the formulas
+of multiplication with the rotation matrix (and over the angle
+rotSpeed).<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">    readKeys();
+    <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//move forward if no wall in front of you
+</span>    if (keyDown(SDLK_UP))
+    {
+      if(worldMap[int(posX + dirX * moveSpeed)][int(posY)] == false) posX += dirX * moveSpeed;
+      if(worldMap[int(posX)][int(posY + dirY * moveSpeed)] == false) posY += dirY * moveSpeed;
+    }
+    <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//move backwards if no wall behind you
+</span>    if (keyDown(SDLK_DOWN))
+    {
+      if(worldMap[int(posX - dirX * moveSpeed)][int(posY)] == false) posX -= dirX * moveSpeed;
+      if(worldMap[int(posX)][int(posY - dirY * moveSpeed)] == false) posY -= dirY * moveSpeed;
+    }
+    <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//rotate to the right
+</span>    if (keyDown(SDLK_RIGHT))
+    {
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//both camera direction and camera plane must be rotated
+</span>      double oldDirX = dirX;
+      dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
+      dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
+      double oldPlaneX = planeX;
+      planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
+      planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
+    }
+    <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//rotate to the left
+</span>    if (keyDown(SDLK_LEFT))
+    {
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//both camera direction and camera plane must be rotated
+</span>      double oldDirX = dirX;
+      dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
+      dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
+      double oldPlaneX = planeX;
+      planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
+      planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
+    }
+  }
+}</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+This concludes the code of the untextured raycaster, the result
+looks like this, and you can walk around in the map:<br>
+<br>
+<img alt="" src="./r_files/raycasteruntextured.gif" style="width: 518px; height: 408px;"><br>
+<br>
+Here's an example of what happens if the camera plane isn't
+perpendicular to the direction vector, the world appears
+skewed:<br>
+<br>
+<img alt="" src="./r_files/raycastingskewed.gif" style="width: 511px; height: 143px;"><br>
+<br>
+<br>
+<h2><a name="Textured_Raycaster" id="Textured_Raycaster"></a>Textured Raycaster</h2>
+
+
+Download the source code here: <a href="https://lodev.org/cgtutor/files/raycaster_textured.cpp">raycaster_textured.cpp</a>
+<br><br>
+
+The core of the textured version of the raycaster is almost the
+same, only at the end some extra calculations need to be done for
+the textures, and a loop in the y-direction is required to go
+through every pixel to determinate which texel (texture pixel) of
+the texture should be used for it.<br>
+<br>
+The vertical stripes can't be drawn with the vertical line command
+anymore, instead every pixel has to be drawn seperately. The best
+way is to use a 2D array as screen buffer this time, and copy it to
+the screen at once, that goes a lot faster than using pset.<br>
+<br>
+Of course we now also need an extra array for the textures, and
+since the "drawbuffer" function works with single integer values
+for colors (instead of 3 separate bytes for R, G and B), the
+textures are stored in this format as well. Normally, you'd load
+the textures from a texture file, but for this simple example some
+dumb textures are generated instead.<br>
+<br>
+The code is mostly the same as the previous example, the bold parts
+are new. Only new parts are explained.<br>
+<br>
+The screenWidth and screenHeight are now defined in the beginning
+because we need the same value for the screen function, and to
+create the screen buffer. Also new are the texture width and height
+that are defined here. These are obviously the width and height in
+texels of the textures.<br>
+<br>
+The world map is changed too, this is a more complex map with
+corridors and rooms to show the different textures. Again, the 0's
+are empty walkthrougable spaces, and each positive number
+corresponds to a different texture.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code"><b>#define screenWidth 640
+#define screenHeight 480
+#define texWidth 64
+#define texHeight 64</b>
+#define mapWidth 24
+#define mapHeight 24
+
+int worldMap[mapWidth][mapHeight]=
+{
+  <b>{4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,7,7,7,7,7,7,7,7},
+  {4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,7},
+  {4,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
+  {4,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
+  {4,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,7},
+  {4,0,4,0,0,0,0,5,5,5,5,5,5,5,5,5,7,7,0,7,7,7,7,7},
+  {4,0,5,0,0,0,0,5,0,5,0,5,0,5,0,5,7,0,0,0,7,7,7,1},
+  {4,0,6,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,0,0,0,8},
+  {4,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,1},
+  {4,0,8,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,0,0,0,8},
+  {4,0,0,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,7,7,7,1},
+  {4,0,0,0,0,0,0,5,5,5,5,0,5,5,5,5,7,7,7,7,7,7,7,1},
+  {6,6,6,6,6,6,6,6,6,6,6,0,6,6,6,6,6,6,6,6,6,6,6,6},
+  {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+  {6,6,6,6,6,6,0,6,6,6,6,0,6,6,6,6,6,6,6,6,6,6,6,6},
+  {4,4,4,4,4,4,0,4,4,4,6,0,6,2,2,2,2,2,2,2,3,3,3,3},
+  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
+  {4,0,0,0,0,0,0,0,0,0,0,0,6,2,0,0,5,0,0,2,0,0,0,2},
+  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
+  {4,0,6,0,6,0,0,0,0,4,6,0,0,0,0,0,5,0,0,0,0,0,0,2},
+  {4,0,0,5,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
+  {4,0,6,0,6,0,0,0,0,4,6,0,6,2,0,0,5,0,0,2,0,0,0,2},
+  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
+  {4,4,4,4,4,4,4,4,4,4,1,1,1,2,2,2,2,2,2,3,3,3,3,3}</b>
+};</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+The screen buffer and texture arrays are declared here. The texture
+array is an array of std::vectors, each with a certain
+width * height pixels.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">int main(int <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">/*argc*/, char */*argv*/</span>[])
+{
+  double posX = 22.0, posY = 11.5;  <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//x and y start position
+</span>  double dirX = -1.0, dirY = 0.0; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//initial direction vector
+</span>  double planeX = 0.0, planeY = 0.66; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//the 2d raycaster version of camera plane
+</span>
+  double time = 0; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//time of current frame
+</span>  double oldTime = 0; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//time of previous frame
+</span>
+  <b>Uint32 buffer[screenHeight][screenWidth]; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">// y-coordinate first because it works per scanline
+</span>  std::vector<uint32> texture[8];
+  for(int i = 0; i &lt; 8; i++) texture[i].resize(texWidth * texHeight);</uint32></b></span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+The main function now begins with generating the textures. We have
+a double loop that goes through every pixel of the textures, and
+then the corresponding pixel of each texture gets a certain value
+calculated out of x and y. Some textures get a XOR pattern, some a
+simple gradient, others a sort of brick pattern, basicly it are all
+quite simple patterns, it's not going to look all that beautiful,
+for better textures see the next chapter.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">  screen(<b>screenWidth,screenHeight</b>, 0, <span style="color: red; --darkreader-inline-color:#ff1a1a;" data-darkreader-inline-color="">"Raycaster"</span>);
+
+  <b><span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//generate some textures
+</span>  for(int x = 0; x &lt; texWidth; x++)
+  for(int y = 0; y &lt; texHeight; y++)
+  {
+    int xorcolor = (x * 256 / texWidth) ^ (y * 256 / texHeight);
+    <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//int xcolor = x * 256 / texWidth;
+</span>    int ycolor = y * 256 / texHeight;
+    int xycolor = y * 128 / texHeight + x * 128 / texWidth;
+    texture[0][texWidth * y + x] = 65536 * 254 * (x != y &amp;&amp; x != texWidth - y); <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//flat red texture with black cross
+</span>    texture[1][texWidth * y + x] = xycolor + 256 * xycolor + 65536 * xycolor; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//sloped greyscale
+</span>    texture[2][texWidth * y + x] = 256 * xycolor + 65536 * xycolor; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//sloped yellow gradient
+</span>    texture[3][texWidth * y + x] = xorcolor + 256 * xorcolor + 65536 * xorcolor; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//xor greyscale
+</span>    texture[4][texWidth * y + x] = 256 * xorcolor; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//xor green
+</span>    texture[5][texWidth * y + x] = 65536 * 192 * (x % 16 &amp;&amp; y % 16); <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//red bricks
+</span>    texture[6][texWidth * y + x] = 65536 * ycolor; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//red gradient
+</span>    texture[7][texWidth * y + x] = 128 + 256 * 128 + 65536 * 128; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//flat grey texture
+</span>  }</b></span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+This is again the start of the gameloop and initial declarations
+and calculations before the DDA algorithm. Nothing has changed
+here.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">  <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//start the main loop
+</span>  while(!done())
+  {
+    for(int x = 0; x &lt; w; x++)
+    {
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//calculate ray position and direction
+</span>      double cameraX = 2*x/double(w)-1; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//x-coordinate in camera space
+</span>      double rayDirX = dirX + planeX*cameraX;
+      double rayDirY = dirY + planeY*cameraX;
+
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//which box of the map we're in
+</span>      int mapX = int(posX);
+      int mapY = int(posY);
+
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//length of ray from current position to next x or y-side
+</span>      double sideDistX;
+      double sideDistY;
+
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//length of ray from one x or y-side to next x or y-side
+</span>      double deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
+      double deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
+      double perpWallDist;
+
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//what direction to step in x or y-direction (either +1 or -1)
+</span>      int stepX;
+      int stepY;
+
+      int hit = 0; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//was there a wall hit?
+</span>      int side; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//was a NS or a EW wall hit?
+</span>
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//calculate step and initial sideDist
+</span>      if (rayDirX &lt; 0)
+      {
+        stepX = -1;
+        sideDistX = (posX - mapX) * deltaDistX;
+      }
+      else
+      {
+        stepX = 1;
+        sideDistX = (mapX + 1.0 - posX) * deltaDistX;
+      }
+      if (rayDirY &lt; 0)
+      {
+        stepY = -1;
+        sideDistY = (posY - mapY) * deltaDistY;
+      }
+      else
+      {
+        stepY = 1;
+        sideDistY = (mapY + 1.0 - posY) * deltaDistY;
+      }</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+This is again the DDA loop, and the calculations of the distance
+and height, nothing has changed here either.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//perform DDA
+</span>      while (hit == 0)
+      {
+        <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//jump to next map square, either in x-direction, or in y-direction
+</span>        if (sideDistX &lt; sideDistY)
+        {
+          sideDistX += deltaDistX;
+          mapX += stepX;
+          side = 0;
+        }
+        else
+        {
+          sideDistY += deltaDistY;
+          mapY += stepY;
+          side = 1;
+        }
+        <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//Check if ray has hit a wall
+</span>        if (worldMap[mapX][mapY] &gt; 0) hit = 1;
+      }
+
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//Calculate distance of perpendicular ray (Euclidean distance would give fisheye effect!)
+</span>      if(side == 0) perpWallDist = (sideDistX - deltaDistX);
+      else          perpWallDist = (sideDistY - deltaDistY);
+
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//Calculate height of line to draw on screen
+</span>      int lineHeight = (int)(h / perpWallDist);
+
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//calculate lowest and highest pixel to fill in current stripe
+</span>      int drawStart = -lineHeight / 2 + h / 2;
+      if(drawStart &lt; 0) drawStart = 0;
+      int drawEnd = lineHeight / 2 + h / 2;
+      if(drawEnd &gt;= h) drawEnd = h - 1;</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+The following calculations are new however, and replace the color
+chooser of the untextured raycaster.<br>
+The variable texNum is the value of the current map square minus 1,
+the reason is that there exists a texture 0, but map tile 0 has no
+texture since it represents an empty space. To be able to use
+texture 0 anyway, substract 1 so that map tiles with value 1 will
+give texture 0, etc...<br>
+<br>
+The value wallX represents the exact value where the wall was hit,
+not just the integer coordinates of the wall. This is required to
+know which x-coordinate of the texture we have to use. This is
+calculated by first calculating the exact x or y coordinate in the
+world, and then substracting the integer value of the wall off it.
+Note that even if it's called wallX, it's actually an y-coordinate
+of the wall if side==1, but it's always the x-coordinate of the
+texture.<br>
+<br>
+Finally, texX is the x-coordinate of the texture, and this is
+calculated out of wallX.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code"><b>      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//texturing calculations
+</span>      int texNum = worldMap[mapX][mapY] - 1; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//1 subtracted from it so that texture 0 can be used!
+</span>
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//calculate value of wallX
+</span>      double wallX; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//where exactly the wall was hit
+</span>      if (side == 0) wallX = posY + perpWallDist * rayDirY;
+      else           wallX = posX + perpWallDist * rayDirX;
+      wallX -= floor((wallX));
+
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//x coordinate on the texture
+</span>      int texX = int(wallX * double(texWidth));
+      if(side == 0 &amp;&amp; rayDirX &gt; 0) texX = texWidth - texX - 1;
+      if(side == 1 &amp;&amp; rayDirY &lt; 0) texX = texWidth - texX - 1;</b></span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+Now that we know the x-coordinate of the texture, we know that this
+coordinate will remain the same, because we stay in the same
+vertical stripe of the screen. Now we need a loop in the
+y-direction to give each pixel of the vertical stripe the correct
+y-coordinate of the texture, called texY.<br>
+<br>
+The value of texY is calculated by increasing by a precomputed step
+size (which is possible because this is constant in the vertical
+stripe) for each pixel. The step size tells how much to increase in the
+texture coordinates (in floating point) for every pixel in vertical screen coordinates.
+It then needs to cast the floating point value to integer to select the actual texture pixel.<br>
+<br>
+NOTE: a faster integer-only bresenham or DDA algorithm may be possible for this.<br>
+<br>
+NOTE: The stepping being done here is affine texture mapping, which means we can
+interpolate linearly between two points rather than have to compute a different
+division for each pixel. This is not perspective correct in general, but for
+perfectly vertical walls (and also perfectly horizontal floors/ceilings) it is,
+so we can use it for raycasting.<br>
+<br>
+The color of the pixel to be drawn is then simply gotten from
+texture[texNum][texX][texY], which is the correct texel of the
+correct texture.<br>
+<br>
+Like the untextured raycaster, here too we'll make the color value
+darker if an y-side of the wall was hit, because that looks a
+little bit better (like there is a sort of lighting). However,
+because the color value doesn't exist out of a separate R, G and B
+value, but these 3 bytes sticked together in a single integer, a
+not so intuitive calculation is used.<br>
+<br>
+The color is made darker by dividing R, G and B through 2. Dividing
+a decimal number through 10, can be done by removing the last digit
+(e.g. 300/10 is 30: the last zero is removed). Similarly, dividing
+a binary number through 2, which is what is done here, is the same
+as removing the last bit. This can be done by bitshifting it to the
+right with &gt;&gt;1. But, here we're bitshifting a 24-bit integer
+(actually 32-bit, but the first 8 bits aren't used). Because of
+this, the last bit of one byte will become the first bit of the
+next byte, and that screws up the color values! So after the
+bitshift, the first bit of every byte has to be set to zero, and
+that can be done by binary "AND-ing" the value with the binary
+value 011111110111111101111111, which is 8355711 in decimal. So the
+result of this is indeed a darker color.<br>
+<br>
+Finally, the current buffer pixel is set to this color, and we move
+on to the next y.<br>
+<br>
+
+<center><table class="codetable"><tbody><tr><td style="vertical-align: top;">
+<pre><b><span class="code">            <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">// How much to increase the texture coordinate per screen pixel
+</span>      double step = 1.0 * texHeight / lineHeight;
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">// Starting texture coordinate
+</span>      double texPos = (drawStart - h / 2 + lineHeight / 2) * step;
+      for(int y = drawStart; y&lt;drawEnd; y++)
+      {
+        <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
+</span>        int texY = (int)texPos &amp; (texHeight - 1);
+        texPos += step;
+        Uint32 color = texture[texNum][texHeight * texY + texX];
+        <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//make color darker for y-sides: R, G and B byte each divided through two with a <span style="color: red; --darkreader-inline-color:#ff1a1a;" data-darkreader-inline-color="">"shift"</span> and an <span style="color: red; --darkreader-inline-color:#ff1a1a;" data-darkreader-inline-color="">"and"</span>
+</span>        if(side == 1) color = (color &gt;&gt; 1) &amp; 8355711;
+        buffer[y][x] = color;
+      }
+    }</span></b></pre>
+</td></tr></tbody></table></center>
+
+<br>
+Now the buffer still has to be drawn, and after that it has to be
+cleared (where in the untextured version we simply had to use
+"cls". Ensure to do it in scanline order for speed thanks to memory locality for caching).
+The rest of this code is again the same.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">    <b>drawBuffer(buffer[0]);
+    for(int y = 0; y &lt; h; y++) for(int x = 0; x &lt; w; x++) buffer[y][x] = 0; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//clear the buffer instead of cls()</span></b>
+    <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//timing for input and FPS counter
+</span>    oldTime = time;
+    time = getTicks();
+    double frameTime = (time - oldTime) / 1000.0; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//frametime is the time this frame has taken, in seconds
+</span>    print(1.0 / frameTime); <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//FPS counter
+</span>    redraw();
+
+    <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//speed modifiers
+</span>    double moveSpeed = frameTime * 5.0; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//the constant value is in squares/second
+</span>    double rotSpeed = frameTime * 3.0; <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//the constant value is in radians/second</span></span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+And here's again the keys, nothing has changed here either. If you
+like you can try to add strafe keys (to strafe to the left and
+right). These have to be made the same way as the up and down keys,
+but use planeX and planeY instead of dirX and dirY.<br>
+<br>
+
+<center><table class="codetable"><tbody><tr><td style="vertical-align: top;">
+<pre><span class="code">    readKeys();
+    <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//move forward if no wall in front of you
+</span>    if (keyDown(SDLK_UP))
+    {
+      if(worldMap[int(posX + dirX * moveSpeed)][int(posY)] == false) posX += dirX * moveSpeed;
+      if(worldMap[int(posX)][int(posY + dirY * moveSpeed)] == false) posY += dirY * moveSpeed;
+    }
+    <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//move backwards if no wall behind you
+</span>    if (keyDown(SDLK_DOWN))
+    {
+      if(worldMap[int(posX - dirX * moveSpeed)][int(posY)] == false) posX -= dirX * moveSpeed;
+      if(worldMap[int(posX)][int(posY - dirY * moveSpeed)] == false) posY -= dirY * moveSpeed;
+    }
+    <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//rotate to the right
+</span>    if (keyDown(SDLK_RIGHT))
+    {
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//both camera direction and camera plane must be rotated
+</span>      double oldDirX = dirX;
+      dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
+      dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
+      double oldPlaneX = planeX;
+      planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
+      planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
+    }
+    <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//rotate to the left
+</span>    if (keyDown(SDLK_LEFT))
+    {
+      <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//both camera direction and camera plane must be rotated
+</span>      double oldDirX = dirX;
+      dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
+      dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
+      double oldPlaneX = planeX;
+      planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
+      planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
+    }
+  }
+}</span></pre>
+</td></tr></tbody></table></center>
+
+<br>
+Here's a few screenshots of the result:<br>
+<br>
+<img alt="" src="./r_files/raycasttexture1.gif" style="width: 319px; height: 239px;"> <img alt="" src="./r_files/raycasttexture2.gif" style="width: 320px; height: 239px;"> <img alt="" src="./r_files/raycasttexture3.gif" style="width: 319px; height: 239px;">
+<br><br>
+Note: Usually images are stored by horizontal scanlines, but for a raycaster the textures are drawn as vertical stripes. Therefore, to optimally use the cache of the CPU and avoid page misses, it might be more efficient to store the textures in memory vertical stripe by vertical stripe, instead of per horizontal scanline. To do this, after generating the textures, swap their X and Y by (this code only works if texWidth and texHeight are the same):
+<br><br>
+<center><table class="codetable"><tbody><tr><td style="vertical-align: top;">
+<pre><span class="code">  <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//swap texture X/Y since they'll be used as vertical stripes
+</span>  for(size_t i = 0; i &lt; 8; i++)
+  for(size_t x = 0; x &lt; texSize; x++)
+  for(size_t y = 0; y &lt; x; y++)
+  std::swap(texture[i][texSize * y + x], texture[i][texSize * x + y]);</span></pre>
+</td></tr></tbody></table></center>
+<br><br>
+Or just swap X and Y where the textures are generated, but in many cases after loading an image or getting a texture from other formats you'll have it in scanlines anyway and have to swap it this way.
+<br><br>
+When getting the pixel from the texture then, use the following code instead:
+<br><br>
+<center><table class="codetable"><tbody><tr><td style="vertical-align: top;">
+<pre><span class="code">Uint32 color = texture[texNum][texSize * texX + texY];</span></pre>
+</td></tr></tbody></table></center>
+
+<h2><a name="Wolfenstein_3D_Textures_" id="Wolfenstein_3D_Textures_"></a>Wolfenstein 3D Textures</h2>
+Instead of just generating some textures, let's load a few from
+images instead! For example the following 8 textures, which come
+from Wolfenstein 3D and are copyright by ID Software.<br>
+<br>
+<img alt="" src="./r_files/wolftextures.png" style="width: 512px; height: 64px;"><br>
+<br>
+Just replace the part of the code that generates the texture
+patterns with the following (and make sure those textures are in
+the correct path). You can download the textures <a href="https://lodev.org/cgtutor/files/wolftex.zip">here</a>.<br>
+<br>
+<center><table class="codetable"><tbody><tr><td style="vertical-align: top;">
+<pre><span class="code">  <span style="color: rgb(0, 0, 153); --darkreader-inline-color:#70a4ff;" data-darkreader-inline-color="">//generate some textures
+</span>  unsigned long tw, th;
+  loadImage(texture[0], tw, th, <span style="color: red; --darkreader-inline-color:#ff1a1a;" data-darkreader-inline-color="">"pics/eagle.png"</span>);
+  loadImage(texture[1], tw, th, <span style="color: red; --darkreader-inline-color:#ff1a1a;" data-darkreader-inline-color="">"pics/redbrick.png"</span>);
+  loadImage(texture[2], tw, th, <span style="color: red; --darkreader-inline-color:#ff1a1a;" data-darkreader-inline-color="">"pics/purplestone.png"</span>);
+  loadImage(texture[3], tw, th, <span style="color: red; --darkreader-inline-color:#ff1a1a;" data-darkreader-inline-color="">"pics/greystone.png"</span>);
+  loadImage(texture[4], tw, th, <span style="color: red; --darkreader-inline-color:#ff1a1a;" data-darkreader-inline-color="">"pics/bluestone.png"</span>);
+  loadImage(texture[5], tw, th, <span style="color: red; --darkreader-inline-color:#ff1a1a;" data-darkreader-inline-color="">"pics/mossy.png"</span>);
+  loadImage(texture[6], tw, th, <span style="color: red; --darkreader-inline-color:#ff1a1a;" data-darkreader-inline-color="">"pics/wood.png"</span>);
+  loadImage(texture[7], tw, th, <span style="color: red; --darkreader-inline-color:#ff1a1a;" data-darkreader-inline-color="">"pics/colorstone.png"</span>);</span></pre>
+</td></tr></tbody></table></center>
+<br><br>
+<img alt="" src="./r_files/wolftex1.gif" style="width: 399px; height: 299px;"> <img alt="" src="./r_files/wolftex2.gif" style="width: 400px; height: 300px;"><br>
+<br>
+In the original Wolfenstein 3D, the colors of one side was also
+made darker than the color of the other side of a wall to create
+the shadow effect, but they used a seperate texture every time, a
+dark and a light one. Here however, only one texture is used for
+each wall and the line of code that divided R, G and B through 2 is
+what makes the y-sides darker.<br>
+<br>
+<h2><a name="Performance" id="Performance"></a>Performance Considerations</h2>
+
+On a modern computer, when using high resolution (4K, as of 2019), this software raycaster
+will be slower than some much more complex 3D graphics get rendered on the GPU with a 3D graphics card.
+<p>
+There are at least two issues holding back speed of the raycaster code in this tutorial, which
+you can take into account if you'd like to make a super fast raycaster for very high resolutions:
+</p><ul>
+<li>Raycasting works with vertical stripes, but the screen buffer in memory is laid out with horizontal scanlines. So drawing vertical stripes is bad for memory locality for caching (it is in fact a worst case scenario), and the loss of
+good caching may hurt the speed more than some of the 3D computations on modern machines.
+It may be possible to program this with better caching behavior (e.g. processing
+multiple stripes at once, using a cache-oblivious transpose algorithm, or having a 90 degree rotated raycaster), but for
+simplicity the rest of this tutorial ignores this caching issue.</li>
+<li>This is using software blitting with SDL (in QuickCG, in redraw()), which is slow for large resolutions compared to hardware rendering. Likely QuickCG's usage of SDL itself is not optimal and e.g. using OpenGL (even for software rendering) may be faster, so that may be fixable behind the scenes. Since this CG tutorial is about software rendering this issue is ignored here as well.</li>
+</ul>
+<br>
+<br>
+<h2>Next Part</h2>
+<a href="https://lodev.org/cgtutor/raycasting2.html">Go directly to part II</a>
+<h2><br></h2>
+<hr>
+Last edited: 2020
+<br><br>
+Copyright (c) 2004-2020 by Lode Vandevenne. All rights reserved.
+<script language="javascript" src="./r_files/colorcode.js.다운로드"></script><div id="goog-gt-tt" class="skiptranslate" dir="ltr"><div style="padding: 8px;"><div><div class="logo"><img src="./r_files/translate_24dp.png" width="20" height="20" alt="Google 번역"></div></div></div><div class="top" style="padding: 8px; float: left; width: 100%;"><h1 class="title gray">원본 텍스트</h1></div><div class="middle" style="padding: 8px;"><div class="original-text"></div></div><div class="bottom" style="padding: 8px;"><div class="activity-links"><span class="activity-link">번역 제안하기</span><span class="activity-link"></span></div><div class="started-activity-container"><hr style="color: rgb(204, 204, 204); background-color: rgb(204, 204, 204); height: 1px; border: none; --darkreader-inline-color:#c8c3bc; --darkreader-inline-bgcolor:#35393b; --darkreader-inline-border-top: initial; --darkreader-inline-border-right: initial; --darkreader-inline-border-bottom: initial; --darkreader-inline-border-left: initial;" data-darkreader-inline-color="" data-darkreader-inline-bgcolor="" data-darkreader-inline-border-top="" data-darkreader-inline-border-right="" data-darkreader-inline-border-bottom="" data-darkreader-inline-border-left=""><div class="activity-root"></div></div></div><div class="status-message" style="display: none;"></div></div>
+
+
+<div class="goog-te-spinner-pos"><div class="goog-te-spinner-animation"><svg xmlns="http://www.w3.org/2000/svg" class="goog-te-spinner" width="96px" height="96px" viewBox="0 0 66 66"><circle class="goog-te-spinner-path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg></div></div></body></html>
